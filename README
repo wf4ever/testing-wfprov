@@ -1,0 +1,13 @@
+Info about the content:
+
+Run the app. -> In order to run the app you only have to execute run the class "Ppal".
+
+Classes:
+RunExample (runs a execution)
+UserInterface (a small console UI)
+Ppal (For running the app)
+
+Packages:
+model -> Structure and logic for the Processes, Inputs, Outputs and the provenance trace.
+rdf-> In order to help on rdf parsing.
+sparql-> Some queries + the query executions.
