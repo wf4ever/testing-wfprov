@@ -1,0 +1,1 @@
+Download the "bat" and the "jar", save them together and double click (execute) the "bat".
