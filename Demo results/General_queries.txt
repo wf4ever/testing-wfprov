@@ -1,0 +1,227 @@
+Prefixes used:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wfprov: <http://purl.org/wf4ever/wfprov#>
+PREFIX wfdesc: <http://purl.org/wf4ever/wfprov#>
+
+1) We want to know how many wfRuns ara available to be checked.
+
+Query:
+SELECT ?wfRun WHERE {
+?wfRun a wfprov:WorkflowRun}
+
+Results:
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="wfRun"/>
+  </head>
+  <results>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778615941</uri></binding>
+    </result>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="wfRun"><uri>http://ns.taverna.org.uk/2011/run/479c9612-4862-4bcb-ad09-315b7b864260/</uri></binding>
+    </result>
+  </results>
+</sparql>
+
+2) Once we have chosen the wfRun we want its processes
+
+Query:
+SELECT DISTINCT ?process WHERE {?process wfprov:wasPartOfWorkflowRun <http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534>.}
+
+Results:
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="process"/>
+  </head>
+  <results>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER1332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER11332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/COMPARELIGANDBINDINGSITESV211332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RAWINTERACTIONNETWORKMERGER1332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/COMPARELIGANDBINDINGSITESV21332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/ALIGNEMENTRESULTMERGER1332778606534</uri></binding>
+    </result>
+  </results>
+</sparql>
+
+3) Also, we may be interested about the inputs and outputs of the WfRun
+
+Query:
+Select DISTINCT ?input ?output where {
+{?output wfprov:wasOutputFrom ?process. ?process wfprov:wasPartOfWorkflowRun <http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534>}
+UNION
+{?process wfprov:usedInput ?input. ?process wfprov:wasPartOfWorkflowRun <http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534>}}
+
+Results:
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="input"/>
+    <variable name="output"/>
+  </head>
+  <results>
+    <result>
+      <binding name="output"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/6B7AB2E53A9186CACAD94833DD34EF8E</uri></binding>
+    </result>
+    <result>
+      <binding name="output"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/0FD08D3BDAC0216F1F892D8BB9B3E7E1</uri></binding>
+    </result>
+    <result>
+      <binding name="output"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/615789F206249A99842F1E0EFA65A957</uri></binding>
+    </result>
+    <result>
+      <binding name="output"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/65E39FED3439AA6650E6AE55314BE6AD</uri></binding>
+    </result>
+    <result>
+      <binding name="output"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/38BB806F498FA762C244979C80412F0D</uri></binding>
+    </result>
+....
+....
+....
+    <result>
+      <binding name="input"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/PVALUE0.00001</uri></binding>
+    </result>
+    <result>
+      <binding name="input"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/68ED7970F5C2CA17B6F867B0F223D194</uri></binding>
+    </result>
+  </results>
+</sparql>
+
+4) In case we are interested in the inputs and outputs od a specific Process
+
+Queries:
+##inputs
+SELECT ?input WHERE {<http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER11332778606534>  wfprov:usedInput ?input}
+##outputs
+SELECT ?output WHERE {?output wfprov:wasOutputFrom <http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER11332778606534>}
+
+Results:
+##inputs
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="input"/>
+  </head>
+  <results>
+    <result>
+      <binding name="input"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/PVALUE0.00001</uri></binding>
+    </result>
+    <result>
+      <binding name="input"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/272CE70CCBB30666D4310D15280C405B</uri></binding>
+    </result>
+    <result>
+      <binding name="input"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/66D929138F1D484C8D8ADC86D5BE7477</uri></binding>
+    </result>
+    <result>
+      <binding name="input"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/65E39FED3439AA6650E6AE55314BE6AD</uri></binding>
+    </result>
+  </results>
+</sparql>
+##outputs
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="output"/>
+  </head>
+  <results>
+    <result>
+      <binding name="output"><uri>http://wings.isi.edu/opmexport/resource/ArtifactInstance/0FD08D3BDAC0216F1F892D8BB9B3E7E1</uri></binding>
+    </result>
+  </results>
+</sparql>
+
+
+5) Appart from that, I want to know which is the template of the process that has been executed
+
+Query:
+Select ?process where { <http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER11332778606534> wfprov:describedByProcess ?process}
+
+Results:
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="process"/>
+  </head>
+  <results>
+    <result>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessTemplate/ABSTRACTSUBWFLIGANDBINDINGSITESCOMPARISON_RESULTSORTER1</uri></binding>
+    </result>
+  </results>
+</sparql>
+
+6) And this template, in which other executions and where has been involved?
+
+Query:
+Select DISTINCT ?wfRun ?wf where { ?wfRun wfprov:describedByWorkflow ?wf. 
+?wf wfdesc:hasProcess <http://wings.isi.edu/opmexport/resource/ProcessTemplate/ABSTRACTSUBWFLIGANDBINDINGSITESCOMPARISON_RESULTSORTERV21>}
+
+
+Results:
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="wfRun"/>
+    <variable name="wf"/>
+  </head>
+  <results>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778615941</uri></binding>
+      <binding name="wf"><uri>http://wings.isi.edu/opmexport/resource/WorkflowTemplate/ABSTRACTSUBWFLIGANDBINDINGSITESCOMPARISON</uri></binding>
+    </result>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534</uri></binding>
+      <binding name="wf"><uri>http://wings.isi.edu/opmexport/resource/WorkflowTemplate/ABSTRACTSUBWFLIGANDBINDINGSITESCOMPARISON</uri></binding>
+    </result>
+  </results>
+</sparql>
+
+7) I have an input and I want to know where has been used (any other wfRuns? In which processes?)
+
+Query:
+Select DISTINCT ?wfRun ?process where { ?process wfprov:usedInput <http://wings.isi.edu/opmexport/resource/ArtifactInstance/PVALUE0.00001>. 
+?process wfprov:wasPartOfWorkflowRun ?wfRun}
+
+Results:
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="wfRun"/>
+    <variable name="process"/>
+  </head>
+  <results>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778615941</uri></binding>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTERV21332778615941</uri></binding>
+    </result>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778615941</uri></binding>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTERV211332778615941</uri></binding>
+    </result>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534</uri></binding>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER1332778606534</uri></binding>
+    </result>
+    <result>
+      <binding name="wfRun"><uri>http://wings.isi.edu/opmexport/resource/Account/ACCOUNT1332778606534</uri></binding>
+      <binding name="process"><uri>http://wings.isi.edu/opmexport/resource/ProcessInstance/RESULTSORTER11332778606534</uri></binding>
+    </result>
+  </results>
+</sparql>
