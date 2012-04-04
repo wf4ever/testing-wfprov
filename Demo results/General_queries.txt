@@ -2,7 +2,7 @@ Prefixes used:
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wfprov: <http://purl.org/wf4ever/wfprov#>
-PREFIX wfdesc: <http://purl.org/wf4ever/wfprov#>
+PREFIX wfdesc: <http://purl.org/wf4ever/wfdesc#>
 
 1) We want to know how many wfRuns ara available to be checked.
 
